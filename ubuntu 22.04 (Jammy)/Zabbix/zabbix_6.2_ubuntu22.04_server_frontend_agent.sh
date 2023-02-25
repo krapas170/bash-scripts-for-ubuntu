@@ -18,6 +18,7 @@ read -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
 read -p "Enter MySQL zabbix password: " MYSQL_ZABBIX_PASSWORD
 
 # Konfiguriere MySQL
+mysql -e "alter user 'root'@'localhost' identified with mysql_native_password by '$MYSQL_ROOT_PASSWORD';"
 echo -e "$MYSQL_ROOT_PASSWORD\n$MYSQL_ROOT_PASSWORD\ny\ny\ny\ny\n" | sudo mysql_secure_installation
 
 # Zabbix repository
