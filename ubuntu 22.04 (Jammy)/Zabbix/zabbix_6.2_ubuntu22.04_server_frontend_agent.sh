@@ -30,7 +30,7 @@ apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sq
 
 # Create initial database
 mysql -u root -p$MYSQL_ROOT_PASSWORD -e "create database zabbix character set utf8mb4 collate utf8mb4_bin;"
-mysql -u root -p$MYSQL_ROOT_PASSWORD -e "create user zabbix@localhost identified by '$MYSQL_ZABBIX_PASSWORD';"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "create user zabbix@localhost identified with mysql_native_password by '$MYSQL_ZABBIX_PASSWORD';"
 mysql -u root -p$MYSQL_ROOT_PASSWORD -e "grant all privileges on zabbix.* to zabbix@localhost;"
 mysql -u root -p$MYSQL_ROOT_PASSWORD -e "set global log_bin_trust_function_creators = 1;"
 
