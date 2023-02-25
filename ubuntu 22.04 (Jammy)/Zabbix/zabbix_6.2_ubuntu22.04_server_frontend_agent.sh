@@ -35,7 +35,7 @@ mysql -u root -p$MYSQL_ROOT_PASSWORD -e "grant all privileges on zabbix.* to zab
 mysql -u root -p$MYSQL_ROOT_PASSWORD -e "set global log_bin_trust_function_creators = 1;"
 
 # Import initial schema and data
-zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p"$zabbix_password" zabbix
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p"$MYSQL_ZABBIX_PASSWORD" zabbix
 
 # Configure the database for Zabbix server
 sed -i "s/# DBPassword=/DBPassword=$MYSQL_ZABBIX_PASSWORD/g" /etc/zabbix/zabbix_server.conf
