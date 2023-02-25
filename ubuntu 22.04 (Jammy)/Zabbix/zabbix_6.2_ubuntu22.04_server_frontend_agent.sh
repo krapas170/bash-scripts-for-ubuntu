@@ -11,10 +11,11 @@
 
 
 # Installiere MySQL
-sudo apt-get install mysql-server -y
+sudo apt-get install mysql-server apache2 php libapache2-mod-php -y
 
-# Warte auf Eingabeaufforderung für MySQL-Root-Passwort
+# Warte auf Eingabeaufforderung für MySQL-Root/Zabbix-Passwort
 read -s -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
+read -s -p "Enter MySQL zabbix password: " MYSQL_ZABBIX_PASSWORD
 
 # Konfiguriere MySQL
 echo -e "$MYSQL_ROOT_PASSWORD\n$MYSQL_ROOT_PASSWORD\ny\ny\ny\ny\n" | sudo mysql_secure_installation
@@ -27,21 +28,17 @@ apt update
 # Install Zabbix server, frontend, agent, Apache, and MySQL
 apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent mysql-server apache2 -y
 
-# Ask for Zabbix MySQL password
-echo "Please enter a password for the Zabbix MySQL user:"
-read -s -p zabbix_password
-
 # Create initial database
-mysql -uroot -e "create database zabbix character set utf8mb4 collate utf8mb4_bin;"
-mysql -uroot -e "create user zabbix@localhost identified by '$zabbix_password';"
-mysql -uroot -e "grant all privileges on zabbix.* to zabbix@localhost;"
-mysql -uroot -e "set global log_bin_trust_function_creators = 1;"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "create database zabbix character set utf8mb4 collate utf8mb4_bin;"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "create user zabbix@localhost identified by '$MYSQL_ZABBIX_PASSWORD';"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "grant all privileges on zabbix.* to zabbix@localhost;"
+mysql -u root -p$MYSQL_ROOT_PASSWORD -e "set global log_bin_trust_function_creators = 1;"
 
 # Import initial schema and data
 zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p"$zabbix_password" zabbix
 
 # Configure the database for Zabbix server
-sed -i "s/# DBPassword=/DBPassword=$zabbix_password/g" /etc/zabbix/zabbix_server.conf
+sed -i "s/# DBPassword=/DBPassword=$MYSQL_ZABBIX_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 
 # Enable and start services
 systemctl enable zabbix-server zabbix-agent apache2 mysql
