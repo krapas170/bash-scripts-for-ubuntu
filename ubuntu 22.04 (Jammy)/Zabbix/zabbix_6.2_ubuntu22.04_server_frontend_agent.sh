@@ -14,8 +14,8 @@
 sudo apt-get install mysql-server apache2 php libapache2-mod-php -y
 
 # Warte auf Eingabeaufforderung für MySQL-Root/Zabbix-Passwort
-read -s -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
-read -s -p "Enter MySQL zabbix password: " MYSQL_ZABBIX_PASSWORD
+read -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
+read -p "Enter MySQL zabbix password: " MYSQL_ZABBIX_PASSWORD
 
 # Konfiguriere MySQL
 echo -e "$MYSQL_ROOT_PASSWORD\n$MYSQL_ROOT_PASSWORD\ny\ny\ny\ny\n" | sudo mysql_secure_installation
