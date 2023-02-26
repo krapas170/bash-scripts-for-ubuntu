@@ -9,6 +9,9 @@
 # License:        GPL v3 or later
 # License URI:    https://www.gnu.org/licenses/gpl-3.0.de.html
 
+# Update system
+apt update
+apt upgrade -y
 
 # Install MySQL
 sudo apt-get install mysql-server apache2 php libapache2-mod-php -y
