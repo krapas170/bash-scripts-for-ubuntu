@@ -10,14 +10,14 @@
 # License URI:    https://www.gnu.org/licenses/gpl-3.0.de.html
 
 
-# Installiere MySQL
+# Install MySQL
 sudo apt-get install mysql-server apache2 php libapache2-mod-php -y
 
-# Warte auf Eingabeaufforderung für MySQL-Root/Zabbix-Passwort
+# Prompt for MySQL root/Zabbix password
 read -p "Enter MySQL root password: " MYSQL_ROOT_PASSWORD
 read -p "Enter MySQL zabbix password: " MYSQL_ZABBIX_PASSWORD
 
-# Konfiguriere MySQL
+# Configure MySQL
 mysql -e "alter user 'root'@'localhost' identified with mysql_native_password by '$MYSQL_ROOT_PASSWORD';"
 echo -e "$MYSQL_ROOT_PASSWORD\n$MYSQL_ROOT_PASSWORD\ny\ny\ny\ny\n" | sudo mysql_secure_installation
 
@@ -42,6 +42,8 @@ zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p"$MYS
 sed -i "s/# DBPassword=/DBPassword=$MYSQL_ZABBIX_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 
 # Enable and start services
+echo "Zabbix is now installed. Please wait for 5 seconds."
+sleep 5s
 systemctl enable zabbix-server zabbix-agent apache2 mysql
 systemctl start zabbix-server zabbix-agent apache2 mysql
 
