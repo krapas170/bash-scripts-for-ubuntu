@@ -45,7 +45,7 @@ zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p"$MYS
 sed -i "s/# DBPassword=/DBPassword=$MYSQL_ZABBIX_PASSWORD/g" /etc/zabbix/zabbix_server.conf
 
 # Enable and start services
-echo "Zabbix is now installed. Please wait for 5 seconds."
+echo "Zabbix is now installed. Please wait 5 seconds."
 sleep 5s
 systemctl enable zabbix-server zabbix-agent apache2 mysql
 systemctl start zabbix-server zabbix-agent apache2 mysql
