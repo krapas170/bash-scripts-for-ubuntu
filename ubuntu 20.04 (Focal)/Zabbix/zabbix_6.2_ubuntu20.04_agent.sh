@@ -17,8 +17,8 @@ wget https://repo.zabbix.com/zabbix/6.2/ubuntu/pool/main/z/zabbix-release/zabbix
 dpkg -i zabbix-release_6.2-4+ubuntu20.04_all.deb
 apt update
 
-# Install Zabbix agent 2
-apt install zabbix-agent2 zabbix-agent2-plugin-*
+# Install Zabbix agent
+apt-get install zabbix-agent
 
 # Enable and start services
 echo "Zabbix agent2 is now installed. Please wait 5 seconds."
