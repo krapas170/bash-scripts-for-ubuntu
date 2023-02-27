@@ -18,13 +18,13 @@ dpkg -i zabbix-release_6.2-4+ubuntu20.04_all.deb
 apt update
 
 # Install Zabbix agent
-apt-get install zabbix-agent
+apt install zabbix-agent2 zabbix-agent2-plugin-*
 
 # Enable and start services
-echo "Zabbix agent2 is now installed. Please wait 5 seconds."
+echo "Zabbix agent2 should be now installed. Please wait 5 seconds."
 sleep 5s
 systemctl restart zabbix-agent2
 systemctl enable zabbix-agent2
 
 # Show Zabbix URL
-echo "Zabbix agent2 is installed and running. You can add this server via your Zabbix server"
+echo "Zabbix agent2 should be installed and running. You can add this server via your Zabbix server"
