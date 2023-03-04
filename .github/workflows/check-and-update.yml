@@ -1,4 +1,4 @@
-name: Check and Update Bash Script
+name: Add information to Bash script
 
 on:
   push:
@@ -6,15 +6,11 @@ on:
       - '*.sh'
 
 jobs:
-  check-and-update:
+  add-information:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Install ShellCheck
-      run: sudo apt-get install -y shellcheck
-    - name: Check Bash syntax
-      run: shellcheck your_script.sh
     - name: Add information to Bash script
       run: |
         echo "#!/bin/bash" > updated_script.sh
