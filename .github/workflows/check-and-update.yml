@@ -11,10 +11,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Install ShellCheck
+      run: sudo apt-get install -y shellcheck
     - name: Check Bash syntax
-      uses: johngrib/check-bash-syntax@v1
-      with:
-        script-path: ${{ github.workspace }}
+      run: shellcheck your_script.sh
     - name: Add information to Bash script
       run: |
         echo "#!/bin/bash" > updated_script.sh
