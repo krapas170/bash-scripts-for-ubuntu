@@ -1,0 +1,30 @@
+name: Check and Update Bash Script
+
+on:
+  push:
+    paths:
+      - '*.sh'
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Check Bash syntax
+      uses: johngrib/check-bash-syntax@v1
+      with:
+        script-path: ${{ github.workspace }}
+    - name: Add information to Bash script
+      run: |
+        echo "#!/bin/bash" > updated_script.sh
+        echo "#" >> updated_script.sh
+        echo "# Name: $(basename ${{ github.event_path }})" >> updated_script.sh
+        echo "# Description: What is the description of this file." >> updated_script.sh
+        echo "# Author: $(git log -1 --pretty=format:'%an')" >> updated_script.sh
+        echo "# Author URI: https://github.com/$(git log -1 --pretty=format:'%ae' | cut -d@ -f1)" >> updated_script.sh
+        echo "# GitHub URI: https://github.com/${{ github.repository }}" >> updated_script.sh
+        echo "# License: GPL v3 or later" >> updated_script.sh
+        echo "# License URI: https://www.gnu.org/licenses/gpl-3.0.de.html" >> updated_script.sh
+        cat ${{ github.event_path }} >> updated_script.sh
+        mv updated_script.sh ${{ github.event_path }}
