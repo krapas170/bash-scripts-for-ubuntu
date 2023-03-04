@@ -15,7 +15,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           file=$(basename "${{ github.event_path }}")
-          if ! grep -q "# Name: ${file}" "${{ github.workspace }}/${{ github.event_path }}"; then
+          if ! grep -q "# Name: ${file}" "${{ github.workspace }}/${{ github.event.inputs.filename }}"; then
             echo "#!/bin/bash" > updated_script.sh
             echo "#" >> updated_script.sh
             echo "# Name: ${file}" >> updated_script.sh
@@ -26,10 +26,10 @@ jobs:
             echo "# License: GPL v3 or later" >> updated_script.sh
             echo "# License URI: https://www.gnu.org/licenses/gpl-3.0.de.html" >> updated_script.sh
             cat "${{ github.workspace }}/${{ github.event_path }}" >> updated_script.sh
-            mv updated_script.sh "${{ github.workspace }}/${{ github.event_path }}"
+            mv updated_script.sh "${{ github.workspace }}/${{ github.event.inputs.filename }}"
             git config --global user.email "github-actions@github.com"
             git config --global user.name "GitHub Actions"
-            git add "${{ github.workspace }}/${{ github.event_path }}"
+            git add "${{ github.workspace }}/${{ github.event.inputs.filename }}"
             git commit -m "Add information to ${file}"
             git push origin HEAD
           fi
