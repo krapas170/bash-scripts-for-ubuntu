@@ -13,6 +13,8 @@ jobs:
       uses: actions/checkout@v2
     - name: Add information to Bash script
       run: |
+        # Change the working directory to the repository
+        cd "$GITHUB_WORKSPACE"
         # Get the name of the script
         file=$(basename "${{ github.event_path }}")
         # Check if the information is already in the script
