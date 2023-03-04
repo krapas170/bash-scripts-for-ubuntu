@@ -11,11 +11,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get filename
+        id: filename
+        run: echo "::set-output name=name::$(basename "${GITHUB_PATH}")"
+        env:
+          GITHUB_PATH: ${{ github.event_path }}
+      - name: Get absolute path to file
+        id: abs_path
+        run: echo "::set-output name=path::$(realpath "${GITHUB_WORKSPACE}/${{ steps.filename.outputs.name }}")"
+        shell: bash
       - name: Add information to Bash script
         run: |
-          cd "${GITHUB_WORKSPACE}"
-          file="$(basename "${GITHUB_PATH}")"
-          if ! grep -q "# Name: ${file}" "${GITHUB_WORKSPACE}/${file}"; then
+          file="${{ steps.filename.outputs.name }}"
+          path="${{ steps.abs_path.outputs.path }}"
+          if ! grep -q "# Name: ${file}" "${path}"; then
             echo "#!/bin/bash" > updated_script.sh
             echo "#" >> updated_script.sh
             echo "# Name: ${file}" >> updated_script.sh
@@ -25,13 +34,11 @@ jobs:
             echo "# GitHub URI: https://github.com/${{ github.repository }}" >> updated_script.sh
             echo "# License: GPL v3 or later" >> updated_script.sh
             echo "# License URI: https://www.gnu.org/licenses/gpl-3.0.de.html" >> updated_script.sh
-            cat "${GITHUB_WORKSPACE}/${file}" >> updated_script.sh
-            mv updated_script.sh "${GITHUB_WORKSPACE}/${file}"
+            cat "${path}" >> updated_script.sh
+            mv updated_script.sh "${path}"
             git config --global user.email "github-actions@github.com"
             git config --global user.name "GitHub Actions"
-            git add "${GITHUB_WORKSPACE}/${file}"
+            git add "${path}"
             git commit -m "Add information to ${file}"
             git push origin HEAD
           fi
-        env:
-          GITHUB_PATH: ${{ github.event_path }}
