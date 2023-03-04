@@ -14,7 +14,7 @@ jobs:
       - name: Add information to Bash script
         run: |
           cd ${{ github.workspace }}
-          file=$(basename ${{ github.event_path }})
+          file=$(basename "${{ github.event_path }}")
           if ! grep -q "# Name: ${file}" "${{ github.workspace }}/${{ github.event_path }}"; then
             echo "#!/bin/bash" > updated_script.sh
             echo "#" >> updated_script.sh
