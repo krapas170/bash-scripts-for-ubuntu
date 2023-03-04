@@ -9,7 +9,9 @@ jobs:
   debug_variables:
     runs-on: ubuntu-latest
     steps:
-      - name: Debug Variables
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Debug
         run: |
           echo "github.workspace: ${{ github.workspace }}"
           echo "github.event_path: ${{ github.event_path }}"
@@ -27,3 +29,6 @@ jobs:
           echo "github.api_url: ${{ github.api_url }}"
           echo "github.graphql_url: ${{ github.graphql_url }}"
           echo "github.workspace_slug: ${{ github.workspace_slug }}"
+          echo "Current directory: $(pwd)"
+          echo "Contents of the current directory: $(ls -a)"
+          echo "Contents of the event.json file: $(cat ${{ github.event_path }})"
