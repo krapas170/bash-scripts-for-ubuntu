@@ -6,29 +6,37 @@ on:
       - '*.sh'
 
 jobs:
-  debug_variables:
+  add-information:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Debug
+      - name: Get filename
+        id: filename
+        run: echo "::set-output name=name::$(basename "${{ github.event_path }}")"
+      - name: Get absolute path to file
+        id: abs_path
+        run: echo "::set-output name=path::$(realpath ${{ github.workspace }}/${{ github.event.inputs.filename }})"
+        shell: bash
+      - name: Add information to Bash script
         run: |
-          echo "github.workspace: ${{ github.workspace }}"
-          echo "github.event_path: ${{ github.event_path }}"
-          echo "github.event_name: ${{ github.event_name }}"
-          echo "github.repository: ${{ github.repository }}"
-          echo "github.ref: ${{ github.ref }}"
-          echo "github.head_ref: ${{ github.head_ref }}"
-          echo "github.base_ref: ${{ github.base_ref }}"
-          echo "github.sha: ${{ github.sha }}"
-          echo "github.actor: ${{ github.actor }}"
-          echo "github.job: ${{ github.job }}"
-          echo "github.run_id: ${{ github.run_id }}"
-          echo "github.run_number: ${{ github.run_number }}"
-          echo "github.action: ${{ github.action }}"
-          echo "github.api_url: ${{ github.api_url }}"
-          echo "github.graphql_url: ${{ github.graphql_url }}"
-          echo "github.workspace_slug: ${{ github.workspace_slug }}"
-          echo "Current directory: $(pwd)"
-          echo "Contents of the current directory: $(ls -a)"
-          echo "Contents of the event.json file: $(cat ${{ github.event_path }})"
+          file="${{ steps.filename.outputs.name }}"
+          path="${{ steps.abs_path.outputs.path }}"
+          if ! grep -q "# Name: ${file}" "${path}"; then
+            echo "#!/bin/bash" > updated_script.sh
+            echo "#" >> updated_script.sh
+            echo "# Name: ${file}" >> updated_script.sh
+            echo "# Description: What is the description of this file." >> updated_script.sh
+            echo "# Author: $(git log -1 --pretty=format:'%an')" >> updated_script.sh
+            echo "# Author URI: https://github.com/$(git log -1 --pretty=format:'%ae' | cut -d@ -f1)" >> updated_script.sh
+            echo "# GitHub URI: https://github.com/${{ github.repository }}" >> updated_script.sh
+            echo "# License: GPL v3 or later" >> updated_script.sh
+            echo "# License URI: https://www.gnu.org/licenses/gpl-3.0.de.html" >> updated_script.sh
+            cat "${path}" >> updated_script.sh
+            mv updated_script.sh "${path}"
+            git config --global user.email "github-actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add "${path}"
+            git commit -m "Add information to ${file}"
+            git push origin HEAD
+          fi
