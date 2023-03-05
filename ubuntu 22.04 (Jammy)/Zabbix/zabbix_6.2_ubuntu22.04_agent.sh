@@ -11,9 +11,17 @@
 #
 # Execute command:    wget "https://raw.githubusercontent.com/krapas170/bash-scripts-for-ubuntu/main/ubuntu%2022.04%20(Jammy)/Zabbix/zabbix_6.2_ubuntu22.04_agent.sh" && bash zabbix_6.2_ubuntu22.04_agent.sh
 
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 GRAY='\033[1;30m'
 NC='\033[0m' # No Color
+
+if [ $(id -u) -ne 0 ]; then
+    printf "${NC}%s${RED}%s${NC}\n" "This script must be run as root. Please enter your password to continue then restart the script with " "bash /root/zabbix_6.2_ubuntu22.04_agent.sh"
+    sudo mv zabbix_6.2_ubuntu22.04_agent.sh /root/zabbix_6.2_ubuntu22.04_agent.sh
+    sudo "$0" "$@"
+    exit
+fi
 
 # Function to validate IP address syntax
 function validate_ip() {
@@ -81,6 +89,7 @@ printf "${RED}%-20s ${NC}%s${GRAY}%s${NC}\n" "Hostgroups:" "Linux servers " "or 
 printf "${RED}%-20s${NC}\n" "Interfaces:"
 printf "${GREEN}%-20s %-20s${NC}\n" "Typ" "IP-address"
 printf "%-20s %-20s\n" "Agent" "$IP_HOST"
+echo
 
 
 # Cleanup installation script
