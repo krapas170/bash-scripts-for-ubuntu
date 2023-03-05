@@ -7,6 +7,9 @@
 # GitHub URI:     https://github.com/krapas170/
 # License:        GPL v3 or later
 # License URI:    https://www.gnu.org/licenses/gpl-3.0.de.html
+#
+#
+# Execute command:    bash <(curl -s "https://github.com/krapas170/bash-scripts-for-ubuntu/raw/main/ubuntu%2022.04%20(Jammy)/Zabbix/zabbix_6.2_ubuntu22.04_agent.sh")
 
 # Read informations from user
 read -p "Enter IP of zabbix-server: " IP_ZABBIX_SERVER
