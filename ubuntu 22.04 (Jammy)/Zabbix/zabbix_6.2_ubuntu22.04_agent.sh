@@ -13,8 +13,8 @@
 
 
 # Read informations from user
-read -p "Enter IP of zabbix-server: " IP_ZABBIX_SERVER
-read -p "Enter hostname of this host: " HOSTNAME
+read -p $'\e[32m'"Enter IP of zabbix-server: $'\e[0m'" \IP_ZABBIX_SERVER
+read -p $'\e[32m'"Enter hostname of this host: $'\e[0m'" \HOSTNAME
 
 # Update system
 apt update
