@@ -9,14 +9,14 @@
 # License URI:    https://www.gnu.org/licenses/gpl-3.0.de.html
 #
 #
-# Execute command:    wget "https://raw.githubusercontent.com/krapas170/bash-scripts-for-ubuntu/main/ubuntu%2022.04%20(Jammy)/Zabbix/zabbix_6.2_ubuntu22.04_agent.sh" && sh zabbix_6.2_ubuntu22.04_agent.sh
+# Execute command:    wget "https://raw.githubusercontent.com/krapas170/bash-scripts-for-ubuntu/main/ubuntu%2022.04%20(Jammy)/Zabbix/zabbix_6.2_ubuntu22.04_agent.sh" && bash zabbix_6.2_ubuntu22.04_agent.sh
 
 GREEN='\033[0;32m'
 GRAY='\033[1;30m'
 NC='\033[0m' # No Color
 
 # Function to validate IP address syntax
-validate_ip {
+function validate_ip() {
   local  ip=$1
   local  stat=1
 
