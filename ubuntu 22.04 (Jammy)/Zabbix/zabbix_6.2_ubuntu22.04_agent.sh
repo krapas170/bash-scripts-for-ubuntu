@@ -11,12 +11,39 @@
 #
 # Execute command:    wget "https://raw.githubusercontent.com/krapas170/bash-scripts-for-ubuntu/main/ubuntu%2022.04%20(Jammy)/Zabbix/zabbix_6.2_ubuntu22.04_agent.sh" && sh zabbix_6.2_ubuntu22.04_agent.sh
 
+GREEN='\033[0;32m'
+GRAY='\033[1;30m'
+NC='\033[0m' # No Color
+
+# Function to validate IP address syntax
+function validate_ip() {
+  local  ip=$1
+  local  stat=1
+
+  if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+    OIFS=$IFS
+    IFS='.'
+    ip=($ip)
+    IFS=$OIFS
+    [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]
+    stat=$?
+  fi
+  return $stat
+}
 
 # Read informations from user
-echo -e "Enter IP of zabbix-server:\033[0m\033[90m        e.g. 127.0.0.1"
-read -p "               " IP_ZABBIX_SERVER
-echo -e "Enter hostname of this host:\033[0m\033[90m      e.g. localhost"
-read -p "               " HOSTNAME
+while true; do
+  printf "${GREEN}Enter IP of zabbix-server:${NC} ${GRAY}(e.g. 127.0.0.1)${NC} "
+  read IP_ZABBIX_SERVER
+  if validate_ip "$IP_ZABBIX_SERVER"; then
+    break
+  else
+    echo "Invalid IP address. Please try again."
+  fi
+done
+
+printf "${GREEN}Enter hostname of this host:${NC} ${GRAY}(e.g. localhost)${NC} "
+read HOSTNAME
 
 # Update system
 apt update
