@@ -74,10 +74,11 @@ echo "Zabbix agent2 is installed and running. You can add this server via your Z
 # Display host configuration
 IP_HOST=$(hostname -I | awk '{print $1}')
 
-printf "\nHost configuration:\n"
-printf "%-20s %s\n" "Hostname:" "$HOSTNAME"
-printf "%-20s %s\n" "Templates:" "Linux by Zabbix agent"
-printf "%-20s %s\n" "Hostgroups:" "Linux servers or something else"
-printf "%-20s %s\n" "Interfaces:"
-printf "%-20s %-20s\n" "Typ" "IP-address"
+printf "\n        \033[1m\033[4mHost configuration:\033[0m\n"
+printf "${RED}%-20s ${NC}%s\n" "Hostname:" "$HOSTNAME"
+printf "${RED}%-20s ${NC}%s\n" "Templates:" "Linux by Zabbix agent"
+printf "${RED}%-20s ${NC}%s${GRAY}%s${NC}\n" "Hostgroups:" "Linux servers " "or something else"
+printf "${RED}%-20s${NC}\n" "Interfaces:"
+printf "${GREEN}%-20s %-20s${NC}\n" "Typ" "IP-address"
 printf "%-20s %-20s\n" "Agent" "$IP_HOST"
+
