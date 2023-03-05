@@ -58,9 +58,9 @@ apt update
 apt install zabbix-agent2 zabbix-agent2-plugin-*
 
 # Edit the agent2 configuration file
-sed -i "s/# Server=127.0.0.1/Server=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agent2.conf
-sed -i "s/# ServerActive=127.0.0.1/ServerActive=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agent2.conf
-sed -i "s/# Hostname=Zabbix server/Server=$HOSTNAME/g" /etc/zabbix/zabbix_agent2.conf
+sed -i "s/Server=127.0.0.1/Server=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agent2.conf
+sed -i "s/ServerActive=127.0.0.1/ServerActive=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agent2.conf
+sed -i "s/Hostname=Zabbix server/Server=$HOSTNAME/g" /etc/zabbix/zabbix_agent2.conf
 
 # Enable and start services
 echo "Zabbix agent2 is now installed. Please wait 5 seconds."
@@ -69,4 +69,15 @@ systemctl restart zabbix-agent2
 systemctl enable zabbix-agent2
 
 # Show Zabbix URL
-echo "Zabbix agent2 is installed and running. You can add this server via your Zabbix server"
+echo "Zabbix agent2 is installed and running. You can add this server via your Zabbix server with the following settings:"
+
+# Display host configuration
+IP_HOST=$(hostname -I | awk '{print $1}')
+
+printf "\nHost configuration:\n"
+printf "%-20s %s\n" "Hostname:" "$HOSTNAME"
+printf "%-20s %s\n" "Templates:" "Linux by Zabbix agent"
+printf "%-20s %s\n" "Hostgroups:" "Linux servers or something else"
+printf "%-20s %s\n" "Interfaces:"
+printf "%-20s %-20s\n" "Typ" "IP-address"
+printf "%-20s %-20s\n" "Agent" "$IP_HOST"
