@@ -60,7 +60,7 @@ apt install zabbix-agent2 zabbix-agent2-plugin-*
 # Edit the agent2 configuration file
 sed -i "s/Server=127.0.0.1/Server=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agent2.conf
 sed -i "s/ServerActive=127.0.0.1/ServerActive=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agent2.conf
-sed -i "s/Hostname=Zabbix server/Server=$HOSTNAME/g" /etc/zabbix/zabbix_agent2.conf
+sed -i "s/Hostname=Zabbix server/Hostname=$HOSTNAME/g" /etc/zabbix/zabbix_agent2.conf
 
 # Enable and start services
 echo "Zabbix agent2 is now installed. Please wait 5 seconds."
