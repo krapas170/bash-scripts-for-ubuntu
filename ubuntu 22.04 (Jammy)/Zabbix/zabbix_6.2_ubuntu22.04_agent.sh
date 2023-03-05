@@ -8,6 +8,10 @@
 # License:        GPL v3 or later
 # License URI:    https://www.gnu.org/licenses/gpl-3.0.de.html
 
+# Read informations from user
+read -p "Enter IP of zabbix-server: " IP_ZABBIX_SERVER
+read -p "Enter hostname of this host: " HOSTNAME
+
 # Update system
 apt update
 apt upgrade -y
@@ -19,6 +23,11 @@ apt update
 
 # Install Zabbix agent 2
 apt install zabbix-agent2 zabbix-agent2-plugin-*
+
+# Edit the agent2 configuration file
+sed -i "s/# Server=127.0.0.1/Server=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agentd.conf
+sed -i "s/# ServerActive=127.0.0.1/ServerActive=$IP_ZABBIX_SERVER/g" /etc/zabbix/zabbix_agentd.conf
+sed -i "s/# Hostname=Zabbix server/Server=$HOSTNAME/g" /etc/zabbix/zabbix_agentd.conf
 
 # Enable and start services
 echo "Zabbix agent2 is now installed. Please wait 5 seconds."
