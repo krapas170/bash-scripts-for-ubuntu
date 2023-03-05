@@ -23,6 +23,8 @@ if [ $(id -u) -ne 0 ]; then
     exit
 fi
 
+cd
+
 # Function to validate IP address syntax
 function validate_ip() {
   local  ip=$1
