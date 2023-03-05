@@ -16,7 +16,7 @@ GRAY='\033[1;30m'
 NC='\033[0m' # No Color
 
 # Function to validate IP address syntax
-function validate_ip() {
+function validate_ip {
   local  ip=$1
   local  stat=1
 
