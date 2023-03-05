@@ -82,3 +82,6 @@ printf "${RED}%-20s${NC}\n" "Interfaces:"
 printf "${GREEN}%-20s %-20s${NC}\n" "Typ" "IP-address"
 printf "%-20s %-20s\n" "Agent" "$IP_HOST"
 
+
+# Cleanup installation script
+rm zabbix*
